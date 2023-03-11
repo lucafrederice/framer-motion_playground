@@ -106,9 +106,10 @@ export const App = () => {
                 <motion.div
                     onLayoutAnimationStart={() => setisAnimating(true)}
                     onLayoutAnimationComplete={() => setisAnimating(false)}
-                    className={`fixed ${status ? "md:inset-60 inset-8 bg-pink-600" : "bg-amber-500 bottom-5 left-5 w-32 h-10"} ${isOpening() ? "rounded-xl" : opened() ? "rounded-xl" : ""} ${isClosing() ? "rounded-[1px]" : closed() ? "rounded" : ""}`}
+                    className={`fixed ${status ? "md:inset-60 inset-x-8 top-8 bg-pink-600" : "bg-amber-500 bottom-5 left-5 w-32 h-10"} ${isOpening() ? "rounded-xl" : opened() ? "rounded-xl" : ""} ${isClosing() ? "rounded-[1px]" : closed() ? "rounded" : ""}`}
                     style={{
-                        paddingBottom: "calc(env(safe-area-inset-bottom) + 1.5rem)"
+                        paddingBottom: "calc(env(safe-area-inset-bottom) + 1.5rem)",
+                        bottom: status ? "calc(env(safe-area-inset-bottom) + 2rem)" : "",
                     }}
                     transition={{
                         x: {
