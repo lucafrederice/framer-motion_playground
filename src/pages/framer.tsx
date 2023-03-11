@@ -106,9 +106,9 @@ export const App = () => {
             </div>
 
             <div
-                className={status ? "fixed inset-0 w-full transition-all ease-in-out duration-200 bg-black bg-opacity-60 backdrop-blur-sm" : ""}
+                className={status ? "fixed inset-0 w-full h-screen transition-all ease-in-out duration-200 bg-black bg-opacity-60 backdrop-blur-sm" : ""}
                         style={{
-                            height: globalThis?.window?.innerHeight
+                            // height: globalThis?.window?.innerHeight
                         }}
             >
                 <motion.div
