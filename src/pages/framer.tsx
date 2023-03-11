@@ -25,6 +25,16 @@ export const App = () => {
         [container?.current?.scrollHeight]
     )
 
+    const content = React.useRef<HTMLDivElement>(null)
+    const [contentHeight, setContentHeight] = React.useState<number>()
+
+    React.useEffect(
+        () => {
+            setContentHeight(content?.current?.scrollHeight)
+        },
+        [content?.current?.scrollHeight]
+    )
+
     const header = React.useRef<HTMLDivElement>(null)
     const [headerHeight, setHeaderHeight] = React.useState<number>(0)
 
@@ -46,7 +56,6 @@ export const App = () => {
         [globalThis?.window?.innerHeight, headerHeight]
     )
 
-    console.log(topValue)
 
 
     return (
@@ -70,10 +79,10 @@ export const App = () => {
                 <motion.div
                     dragElastic={0.1}
                     drag={'y'}
-                    dragConstraints={{ bottom: 0, top: containerHeight ? - containerHeight : 0 }}
-                    className={`fixed bottom-0 left-0 right-0 h-max w-full bg-white rounded-t-2xl shadow-lg`}
+                    dragConstraints={{ bottom: 0, top: contentHeight ? - contentHeight : 0 }}
+                    className={`fixed left-0 right-0 h-max w-full bg-white rounded-t-2xl shadow-lg`}
                     style={{
-                        top: topValue
+                        bottom: containerHeight && - containerHeight
                     }}
                 >
                     <div
@@ -86,12 +95,12 @@ export const App = () => {
                         <div className="w-1/4 max-w-[8rem] h-1 rounded bg-gray-300" />
                         Hellaw
                     </div>
-                    <div className={`w-full p-4 bg-gray-100`}
+                    <div ref={container} className={`w-full p-4 bg-gray-100`}
                         style={{
-                            paddingBottom: containerHeight
+                            paddingBottom: contentHeight
                         }}
                     >
-                        <div ref={container} className="min-h-[500px] bg-gray-300" ></div>
+                        <div ref={content} className="min-h-[500px] bg-gray-300" ></div>
                     </div>
                 </motion.div>
             </div>
@@ -126,17 +135,6 @@ export const App = () => {
             </div>
         </div>
     )
-}
-
-const open = {
-    inset: 30,
-}
-
-const closed = {
-    bottom: 20,
-    left: 20,
-    width: 120,
-    height: 40,
 }
 
 export default App
