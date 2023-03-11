@@ -65,10 +65,7 @@ export const App = () => {
                     <p className="text-gray-200 text-center text-base">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam aliquam amet id ut quaerat. Cumque ipsa saepe rerum, modi labore enim quidem? Omnis nemo quibusdam harum unde perspiciatis magni ipsam. Totam sed necessitatibus quibusdam similique voluptate consequuntur suscipit voluptates corporis nulla? Suscipit officiis esse quam placeat et ex, temporibus nihil illo distinctio laboriosam iste amet accusantium sequi tenetur consequuntur ratione vitae sed aspernatur! Quisquam, ex quia. Inventore vel blanditiis nesciunt maiores laborum voluptates ut nulla voluptatem, architecto, quo eveniet alias harum nobis ab magni aperiam odit dolorum sint id velit, fugit rerum. Mollitia deleniti excepturi ex sequi, possimus commodi quasi maxime, voluptatum beatae hic dolorum culpa suscipit explicabo, provident modi porro corrupti ab odit labore deserunt. Doloribus quam iure explicabo nesciunt esse, sit laudantium. Sit perspiciatis omnis perferendis, deleniti minus ducimus voluptatum vel nesciunt est esse repudiandae voluptatibus ipsam itaque accusamus dicta, quia totam repellendus alias voluptatem aliquam iste. Est.</p>
                 </div>
             </div>
-            <div className="fixed w-full max-h-screen"
-                style={{
-                    height: globalThis?.window?.innerHeight
-                }}
+            <div className="fixed w-full max-h-screen h-screen"
             >
                 <motion.div
                     dragElastic={0.1}
@@ -82,6 +79,9 @@ export const App = () => {
                     <div
                         ref={header}
                         className="w-full grid justify-items-center content-center gap-5 pt-3 pb-4 px-4"
+                        style={{
+                            paddingBottom: "calc(env(safe-are-inset-bottom) + 1rem)"
+                        }}
                     >
                         <div className="w-1/4 max-w-[8rem] h-1 rounded bg-gray-300" />
                         Hellaw
@@ -97,15 +97,15 @@ export const App = () => {
             </div>
 
             <div
-                className={status ? "fixed inset-0 w-full transition-all ease-in-out duration-200 bg-black bg-opacity-60 backdrop-blur-sm" : ""}
-                style={{
-                    height: globalThis?.window?.innerHeight
-                }}
+                className={status ? "fixed inset-0 w-full h-screen transition-all ease-in-out duration-200 bg-black bg-opacity-60 backdrop-blur-sm" : ""}
             >
                 <motion.div
                     onLayoutAnimationStart={() => setisAnimating(true)}
                     onLayoutAnimationComplete={() => setisAnimating(false)}
                     className={`fixed ${status ? "md:inset-60 inset-8 bg-pink-600" : "bg-amber-500 bottom-5 left-5 w-32 h-10"} ${isOpening() ? "rounded-xl" : opened() ? "rounded-xl" : ""} ${isClosing() ? "rounded-[1px]" : closed() ? "rounded" : ""}`}
+                    style={{
+                        paddingBottom: "calc(env(safe-are-inset-bottom) + 1rem)"
+                    }}
                     transition={{
                         x: {
                             duration: 0.65,
