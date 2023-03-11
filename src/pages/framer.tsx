@@ -109,7 +109,7 @@ export const App = () => {
                     className={`fixed ${status ? "md:inset-60 inset-x-8 top-8 bg-pink-600" : "bg-amber-500 bottom-5 left-5 w-32 h-10"} ${isOpening() ? "rounded-xl" : opened() ? "rounded-xl" : ""} ${isClosing() ? "rounded-[1px]" : closed() ? "rounded" : ""}`}
                     style={{
                         paddingBottom: "calc(env(safe-area-inset-bottom) + 1.5rem)",
-                        bottom: status ? "calc(env(safe-area-inset-bottom) + 2rem)" : "",
+                        bottom: status && globalThis?.window?.innerWidth < 768 ? "calc(env(safe-area-inset-bottom) + 2rem)" : "",
                     }}
                     transition={{
                         x: {
