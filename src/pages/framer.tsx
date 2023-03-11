@@ -78,7 +78,7 @@ export const App = () => {
                 >
                     <div
                         ref={header}
-                        className="w-full grid justify-items-center content-center gap-5 pt-3 pb-4 px-4"
+                        className="w-full grid justify-items-center content-center gap-5 pt-3 px-4"
                         style={{
                             paddingBottom: "calc(env(safe-are-inset-bottom) + 1rem)"
                         }}
