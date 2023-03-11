@@ -35,45 +35,38 @@ export const App = () => {
         [content?.current?.scrollHeight]
     )
 
-    const header = React.useRef<HTMLDivElement>(null)
-    const [headerHeight, setHeaderHeight] = React.useState<number>(0)
-
     React.useEffect(
         () => {
-            if (header?.current?.scrollHeight)
-                setHeaderHeight(header?.current?.scrollHeight)
+            if (status) globalThis.window.document.body.style.overflow = "hidden"
+            if (!status) globalThis.window.document.body.style.overflowY = "scroll"
         },
-        [header?.current?.scrollHeight]
-    )
-
-
-    const [topValue, setTopValue] = React.useState<number>()
-
-    React.useEffect(
-        () => {
-            setTopValue(globalThis?.window?.innerHeight - headerHeight)
-        },
-        [globalThis?.window?.innerHeight, headerHeight]
+        [status]
     )
 
 
 
     return (
-        <div className="relative min-h-screen h-[150vh] bg-gradient-to-br from-pink-500 to-purple-900">
-            <div
-                className="p-10"
-            >
+        <div className="relative">
+
+            <div className={`relative min-h-screen h-[150vh] bg-gradient-to-br from-pink-500 to-purple-900`}>
                 <div
-                    className="mx-auto grid gap-8 content-center justify-items-center max-w-3xl"
+                    className="p-10"
                 >
-                    <h1
-                        className="text-white text-center text-5xl font-bold"
+                    <div
+                        className="mx-auto grid gap-8 content-center justify-items-center max-w-3xl"
                     >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, veniam?
-                    </h1>
-                    <p className="text-gray-200 text-center text-base">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam aliquam amet id ut quaerat. Cumque ipsa saepe rerum, modi labore enim quidem? Omnis nemo quibusdam harum unde perspiciatis magni ipsam. Totam sed necessitatibus quibusdam similique voluptate consequuntur suscipit voluptates corporis nulla? Suscipit officiis esse quam placeat et ex, temporibus nihil illo distinctio laboriosam iste amet accusantium sequi tenetur consequuntur ratione vitae sed aspernatur! Quisquam, ex quia. Inventore vel blanditiis nesciunt maiores laborum voluptates ut nulla voluptatem, architecto, quo eveniet alias harum nobis ab magni aperiam odit dolorum sint id velit, fugit rerum. Mollitia deleniti excepturi ex sequi, possimus commodi quasi maxime, voluptatum beatae hic dolorum culpa suscipit explicabo, provident modi porro corrupti ab odit labore deserunt. Doloribus quam iure explicabo nesciunt esse, sit laudantium. Sit perspiciatis omnis perferendis, deleniti minus ducimus voluptatum vel nesciunt est esse repudiandae voluptatibus ipsam itaque accusamus dicta, quia totam repellendus alias voluptatem aliquam iste. Est.</p>
+                        <h1
+                            className="text-white text-center text-5xl font-bold"
+                        >
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, veniam?
+                        </h1>
+                        <p className="text-gray-200 text-center text-base">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam aliquam amet id ut quaerat. Cumque ipsa saepe rerum, modi labore enim quidem? Omnis nemo quibusdam harum unde perspiciatis magni ipsam. Totam sed necessitatibus quibusdam similique voluptate consequuntur suscipit voluptates corporis nulla? Suscipit officiis esse quam placeat et ex, temporibus nihil illo distinctio laboriosam iste amet accusantium sequi tenetur consequuntur ratione vitae sed aspernatur! Quisquam, ex quia. Inventore vel blanditiis nesciunt maiores laborum voluptates ut nulla voluptatem, architecto, quo eveniet alias harum nobis ab magni aperiam odit dolorum sint id velit, fugit rerum. Mollitia deleniti excepturi ex sequi, possimus commodi quasi maxime, voluptatum beatae hic dolorum culpa suscipit explicabo, provident modi porro corrupti ab odit labore deserunt. Doloribus quam iure explicabo nesciunt esse, sit laudantium. Sit perspiciatis omnis perferendis, deleniti minus ducimus voluptatum vel nesciunt est esse repudiandae voluptatibus ipsam itaque accusamus dicta, quia totam repellendus alias voluptatem aliquam iste. Est.</p>
+                    </div>
                 </div>
             </div>
+
+
+
             <div className="fixed w-full max-h-screen h-screen"
             >
                 <motion.div
@@ -86,7 +79,6 @@ export const App = () => {
                     }}
                 >
                     <div
-                        ref={header}
                         className="w-full grid justify-items-center content-center gap-5 pt-3 px-4"
                         style={{
                             paddingBottom: "calc(env(safe-area-inset-bottom) + 1.5rem)"
@@ -106,10 +98,10 @@ export const App = () => {
             </div>
 
             <div
-                className={status ? "fixed inset-0 w-full h-screen transition-all ease-in-out duration-200 bg-black bg-opacity-60 backdrop-blur-sm" : ""}
-                        style={{
-                            // height: globalThis?.window?.innerHeight
-                        }}
+                className={status ? "fixed inset-0 w-full min-h-screen h-screen transition-all ease-in-out duration-200 bg-black bg-opacity-60 backdrop-blur-sm" : ""}
+                style={{
+                    // height: globalThis?.window?.innerHeight
+                }}
             >
                 <motion.div
                     onLayoutAnimationStart={() => setisAnimating(true)}
