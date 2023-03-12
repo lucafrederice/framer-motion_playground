@@ -39,7 +39,8 @@ export default function Drawer() {
     return <div className="fixed w-full max-h-screen h-screen"
     >
         <motion.div
-            dragElastic={0.1}
+            dragElastic={0}
+            dragMomentum={false}
             drag={'y'}
             dragConstraints={{ bottom: 0, top: contentHeight ? - contentHeight : 0 }}
             className={`fixed left-0 right-0 h-max w-full bg-white rounded-t-2xl shadow-lg`}
