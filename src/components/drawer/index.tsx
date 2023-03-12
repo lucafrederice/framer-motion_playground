@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import Image from "next/image"
 import React from "react"
 
 
@@ -68,6 +69,7 @@ export default function Drawer() {
                             }
                         `}
                     </style>
+                    <Image src={"/vercel.svg"} alt={"logo"} width={100} height={100}/>
                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur adipisci perferendis ipsam ducimus eveniet unde iste repellat ad amet maiores.</p>
                     <a href="https://framer-motion-playground-lucafrederice.vercel.app/" className="text-cyan-900">enkor</a>
                     <button type="button" onClick={() => setBoo(v => !v)} className="bg-cyan-500 hover:bg-cyan-600 text-white shadow-md hover:shadow-lg shadow-cyan-200 transition-all duration-200 ease-linear hover:shadow-cyan-300 rounded-md px-6 py-3">Battan heer</button>
