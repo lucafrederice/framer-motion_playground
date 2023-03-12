@@ -25,6 +25,16 @@ export default function Drawer() {
 
     const [boo, setBoo] = React.useState(false)
 
+
+    const props: {
+        style: React.CSSProperties
+    } = {
+        style: {
+            userSelect: "text"
+        }
+    }
+
+
     return <div className="fixed w-full max-h-screen h-screen"
     >
         <motion.div
@@ -33,7 +43,7 @@ export default function Drawer() {
             dragConstraints={{ bottom: 0, top: contentHeight ? - contentHeight : 0 }}
             className={`fixed left-0 right-0 h-max w-full bg-white rounded-t-2xl shadow-lg`}
             style={{
-                bottom: containerHeight && - containerHeight
+                bottom: containerHeight && - containerHeight,
             }}
         >
             <div
@@ -43,7 +53,7 @@ export default function Drawer() {
                 }}
             >
                 <div className="w-1/4 max-w-[8rem] h-1 rounded bg-gray-300" />
-                Hellaw
+                <p>Hellaw</p>
             </div>
             <div ref={container} className={`w-full p-4 bg-gray-100`}
                 style={{
@@ -51,6 +61,15 @@ export default function Drawer() {
                 }}
             >
                 <div ref={content} className="min-h-[500px] bg-gray-300 p-8 grid gap-4 justify-items-center content-start" >
+                    <style>
+                        {`
+                            * {
+                                user-select: text
+                            }
+                        `}
+                    </style>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur adipisci perferendis ipsam ducimus eveniet unde iste repellat ad amet maiores.</p>
+                    <a href="https://framer-motion-playground-lucafrederice.vercel.app/" className="text-cyan-900">enkor</a>
                     <button type="button" onClick={() => setBoo(v => !v)} className="bg-cyan-500 hover:bg-cyan-600 text-white shadow-md hover:shadow-lg shadow-cyan-200 transition-all duration-200 ease-linear hover:shadow-cyan-300 rounded-md px-6 py-3">Battan heer</button>
                     {
                         boo && <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellendus mollitia dolorum tempore enim, impedit inventore magni similique expedita debitis ipsam dolore tenetur aliquam soluta asperiores nemo dolor. Ipsa, accusantium dignissimos.</p>
