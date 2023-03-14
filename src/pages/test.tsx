@@ -264,54 +264,87 @@ const elements: {
         },
     ]
 
-const GridOpen = ({ onClick, id }: {
+const GridOpen = ({ onClick, id, type }: {
     onClick: () => void,
-    id: string
+    id: string,
+    type: ElementType
 }) => {
+    let color: string = "bg-black"
+    if (type === "highlight") color = "pink"
+    if (type === "banner") color = "amber"
+    if (type === "featured") color = "purple"
+    if (type === "row") color = "cyan"
+    if (type === "button") color = "red"
+    if (type === "icon") color = "teal"
+
+    let bgColor: string = `bg-${color}-500`
+    let borderColor: string = `border-${color}-500`
+    let shadowColor: string = `shadow-${color}-900`
+
+
     return (
-        <div className="" onClick={onClick}>
+        <div className="">
             <motion.div
                 layoutId={id}
-                className="pointer-events-auto rounded-3xl bg-black fixed inset-6 grid justify-items-center content-center"
+                className={`pointer-events-auto rounded-3xl shadow-md fixed inset-6 grid justify-items-center  content-center text-gray-100 ${bgColor}`}
                 style={{
                     bottom: "calc(env(safe-area-inset-bottom) + 1.5rem)"
                 }}
-            />
+            >
+                <div className="grid gap-2 content-center justify-items-center">
+                    {type}
+                    <button type="button" onClick={onClick} className={`px-4 py-2 border rounded`}>Close</button>
+                </div>
+            </motion.div>
         </div>
     )
 }
 
-const Modal = ({ index, setIndex }: { index: string | false, setIndex: React.Dispatch<React.SetStateAction<string | false>> }) => {
+const Modal = ({ id, setId, type }: { id: string | false, setId: React.Dispatch<React.SetStateAction<string | false>>, type: ElementType }) => {
+
+
     React.useEffect(
         () => {
-            if (index) globalThis.window.document.body.style.overflow = "hidden"
-            if (!index) globalThis.window.document.body.style.overflowY = "scroll"
+            if (id) globalThis.window.document.body.style.overflow = "hidden"
+            if (!id) globalThis.window.document.body.style.overflowY = "scroll"
         },
-        [index]
+        [id]
     )
 
     return (
         <AnimatePresence>
-            {index !== false && (
+            {id !== false && (
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.6 }}
                     exit={{ opacity: 0 }}
                     key="overlay"
                     className="bg-white opacity-20 fixed inset-0"
-                    onClick={() => setIndex(false)}
+                    onClick={() => setId(false)}
                 />
             )}
 
-            {index !== false && (
+            {id !== false && (
                 <GridOpen
-                    key={index}
-                    id={index}
-                    onClick={() => setIndex(false)}
+                    key={id}
+                    id={id}
+                    onClick={() => setId(false)}
+                    type={type}
                 />
             )}
         </AnimatePresence>
     )
+}
+
+const MapModal = ({ type, id, setId }: { type: ElementType, id: string | false, setId: React.Dispatch<React.SetStateAction<string | false>> }) => {
+
+    if (type === "highlight") return <Modal id={id} setId={setId} type={type} />
+    if (type === "banner") return <Modal id={id} setId={setId} type={type} />
+    if (type === "featured") return <Modal id={id} setId={setId} type={type} />
+    if (type === "row") return <Modal id={id} setId={setId} type={type} />
+    if (type === "button") return <Modal id={id} setId={setId} type={type} />
+    if (type === "icon") return <Modal id={id} setId={setId} type={type} />
+    return <Modal id={id} setId={setId} type={type} />
 }
 
 const Map = ({ type, id, onClick }: { type: ElementType, id: string, onClick: () => void }) => {
@@ -321,11 +354,13 @@ const Map = ({ type, id, onClick }: { type: ElementType, id: string, onClick: ()
     if (type === "row") return <Row id={id} onClick={onClick} />
     if (type === "button") return <Button id={id} onClick={onClick} />
     if (type === "icon") return <Icon id={id} onClick={onClick} />
-    return <></>
+    return <>default</>
 }
 
 export default function Test() {
-    const [index, setIndex] = useState<string | false>(false)
+    const [id, setId] = useState<string | false>(false)
+
+    const currentType = elements.filter(item => item.id === id)[0]?.type
 
     return (
         <div>
@@ -337,17 +372,17 @@ export default function Test() {
                 }}
             >
                 {
-                    elements.map(el => <Map key={el.id} type={el.type} id={el.id} onClick={() => setIndex(el.id)} />)
+                    elements.map(el => <Map key={el.id} type={el.type} id={el.id} onClick={() => setId(el.id)} />)
                 }
             </div>
 
-            <Modal index={index} setIndex={setIndex} />
+            <MapModal type={currentType || "default"} id={id} setId={setId} />
         </div>
     )
 }
 
 const Highlight = ({ id, onClick }: { id?: string, onClick: () => void }) => {
-    return <motion.div layoutId={id} className="row-span-4 col-span-4 bg-pink-500"
+    return <motion.div layoutId={id} className="row-span-4 col-span-4 bg-pink-500 cursor-pointer"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 4)"
         }}
@@ -356,7 +391,7 @@ const Highlight = ({ id, onClick }: { id?: string, onClick: () => void }) => {
 }
 
 const Banner = ({ id, onClick }: { id?: string, onClick: () => void }) => {
-    return <motion.div layoutId={id} className="row-span-2 col-span-4 bg-amber-500"
+    return <motion.div layoutId={id} className="row-span-2 col-span-4 bg-amber-500 cursor-pointer"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 2)"
         }}
@@ -365,7 +400,7 @@ const Banner = ({ id, onClick }: { id?: string, onClick: () => void }) => {
 }
 
 const Featured = ({ id, onClick }: { id?: string, onClick: () => void }) => {
-    return <motion.div layoutId={id} className="row-span-2 col-span-2 bg-purple-500"
+    return <motion.div layoutId={id} className="row-span-2 col-span-2 bg-purple-500 cursor-pointer"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 2)"
         }}
@@ -374,7 +409,7 @@ const Featured = ({ id, onClick }: { id?: string, onClick: () => void }) => {
 }
 
 const Row = ({ id, onClick }: { id?: string, onClick: () => void }) => {
-    return <motion.div layoutId={id} className="row-span-1 col-span-4 bg-cyan-500"
+    return <motion.div layoutId={id} className="row-span-1 col-span-4 bg-cyan-500 cursor-pointer"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 1)"
         }}
@@ -383,7 +418,7 @@ const Row = ({ id, onClick }: { id?: string, onClick: () => void }) => {
 }
 
 const Button = ({ id, onClick }: { id?: string, onClick: () => void }) => {
-    return <motion.div layoutId={id} className="row-span-1 col-span-2 bg-red-500"
+    return <motion.div layoutId={id} className="row-span-1 col-span-2 bg-red-500 cursor-pointer"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 1)"
         }}
@@ -392,7 +427,7 @@ const Button = ({ id, onClick }: { id?: string, onClick: () => void }) => {
 }
 
 const Icon = ({ id, onClick }: { id?: string, onClick: () => void }) => {
-    return <motion.div layoutId={id} className="row-span-1 col-span-1 bg-teal-500"
+    return <motion.div layoutId={id} className="row-span-1 col-span-1 bg-teal-500 cursor-pointer"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 1)"
         }}
