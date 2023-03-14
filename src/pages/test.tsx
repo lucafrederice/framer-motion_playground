@@ -269,10 +269,13 @@ const GridOpen = ({ onClick, id }: {
     id: string
 }) => {
     return (
-        <div className="fixed inset-0 grid justify-items-center content-center pointer-events-none" onClick={onClick}>
+        <div className="" onClick={onClick}>
             <motion.div
                 layoutId={id}
-                className="pointer-events-auto rounded-3xl w-8 h-8 bg-black"
+                className="pointer-events-auto rounded-3xl bg-black fixed inset-6 grid justify-items-center content-center"
+                style={{
+                    bottom: "calc(env(safe-area-inset-bottom) + 1.5rem)"
+                }}
             />
         </div>
     )
