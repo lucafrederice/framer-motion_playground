@@ -62,6 +62,12 @@ const data: Article[] = [
     },
 ]
 
+const numColors = 4 * 4;
+const makeColor = (hue: number) => `hsl(${hue}, 100%, 50%)`;
+const colors = Array.from(Array(numColors)).map((_, i) =>
+    makeColor(Math.round((360 / numColors) * i))
+);
+
 function Gallery({ items, setIndex }: {
     items: string[],
     setIndex: React.Dispatch<React.SetStateAction<number | false>>
@@ -153,93 +159,241 @@ export function Gal() {
     )
 }
 
-export default function Test() {
+
+type ElementType = "highlight" | "banner" | "button" | "featured" | "row" | "icon"
+
+const elements: {
+    id: string,
+    type: ElementType
+}[] = [
+        {
+            id: "1",
+            type: "highlight"
+        },
+        {
+            id: "2",
+            type: "banner"
+        },
+        {
+            id: "3",
+            type: "featured"
+        },
+        {
+            id: "4",
+            type: "row"
+        },
+        {
+            id: "5",
+            type: "featured"
+        },
+        {
+            id: "6",
+            type: "button"
+        },
+        {
+            id: "7",
+            type: "icon"
+        },
+        {
+            id: "8",
+            type: "icon"
+        },
+        {
+            id: "9",
+            type: "banner"
+        },
+        {
+            id: "10",
+            type: "featured"
+        },
+        {
+            id: "11",
+            type: "icon"
+        },
+        {
+            id: "12",
+            type: "icon"
+        },
+        {
+            id: "13",
+            type: "icon"
+        },
+        {
+            id: "14",
+            type: "icon"
+        },
+        {
+            id: "15",
+            type: "row"
+        },
+        {
+            id: "16",
+            type: "banner"
+        },
+        {
+            id: "17",
+            type: "icon"
+        },
+        {
+            id: "18",
+            type: "icon"
+        },
+        {
+            id: "19",
+            type: "icon"
+        },
+        {
+            id: "20",
+            type: "icon"
+        },
+        {
+            id: "21",
+            type: "row"
+        },
+        {
+            id: "22",
+            type: "button"
+        },
+        {
+            id: "23",
+            type: "button"
+        },
+        {
+            id: "24",
+            type: "row"
+        },
+    ]
+
+const GridOpen = ({ onClick, id }: {
+    onClick: () => void,
+    id: string
+}) => {
     return (
-        <div
-            className="p-2 min-h-screen h-full w-full bg-gray-100 grid gap-2 [--grid-gap:8px] md:[--grid-gap:16px] grid-flow-dense grid-rows-fit-asdasd grid-cols-4 md:grid-cols-12  [--grid-cols:4] md:[--grid-cols:12]"
-            style={{
-                gridTemplateRows: "repeat(auto-fill, minmax(calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols)), 1fr))"
-            }}
-        >
-            <Highlight />
-            <Banner />
-            <Featured />
-            <Row />
-            <Featured />
-            <Button />
-            <Icon />
-            <Icon />
-            <Banner />
-            <Featured />
-            <Icon />
-            <Icon />
-            <Icon />
-            <Icon />
-            <Row />
-            <Banner />
-            <Icon />
-            <Icon />
-            <Icon />
-            <Icon />
-            <Row />
-            <Button />
-            <Button />
-            <Row />
+        <div className="fixed inset-0 grid justify-items-center content-center pointer-events-none" onClick={onClick}>
+            <motion.div
+                layoutId={id}
+                className="pointer-events-auto rounded-3xl w-8 h-8 bg-black"
+            />
         </div>
     )
 }
 
-const numColors = 4 * 4;
-const makeColor = (hue: number) => `hsl(${hue}, 100%, 50%)`;
-const colors = Array.from(Array(numColors)).map((_, i) =>
-    makeColor(Math.round((360 / numColors) * i))
-);
+const Modal = ({ index, setIndex }: { index: string | false, setIndex: React.Dispatch<React.SetStateAction<string | false>> }) => {
+    React.useEffect(
+        () => {
+            if (index) globalThis.window.document.body.style.overflow = "hidden"
+            if (!index) globalThis.window.document.body.style.overflowY = "scroll"
+        },
+        [index]
+    )
 
-const Highlight = () => {
-    return <div className="row-span-4 col-span-4 bg-pink-500"
+    return (
+        <AnimatePresence>
+            {index !== false && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.6 }}
+                    exit={{ opacity: 0 }}
+                    key="overlay"
+                    className="bg-white opacity-20 fixed inset-0"
+                    onClick={() => setIndex(false)}
+                />
+            )}
+
+            {index !== false && (
+                <GridOpen
+                    key={index}
+                    id={index}
+                    onClick={() => setIndex(false)}
+                />
+            )}
+        </AnimatePresence>
+    )
+}
+
+const Map = ({ type, id, onClick }: { type: ElementType, id: string, onClick: () => void }) => {
+    if (type === "highlight") return <Highlight id={id} onClick={onClick} />
+    if (type === "banner") return <Banner id={id} onClick={onClick} />
+    if (type === "featured") return <Featured id={id} onClick={onClick} />
+    if (type === "row") return <Row id={id} onClick={onClick} />
+    if (type === "button") return <Button id={id} onClick={onClick} />
+    if (type === "icon") return <Icon id={id} onClick={onClick} />
+    return <></>
+}
+
+export default function Test() {
+    const [index, setIndex] = useState<string | false>(false)
+
+    return (
+        <div>
+
+            <div
+                className="p-2 min-h-screen h-full w-full bg-gray-100 grid gap-2 [--grid-gap:8px] md:[--grid-gap:16px] grid-flow-dense grid-rows-fit-asdasd grid-cols-4 md:grid-cols-12  [--grid-cols:4] md:[--grid-cols:12]"
+                style={{
+                    gridTemplateRows: "repeat(auto-fill, minmax(calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols)), 1fr))"
+                }}
+            >
+                {
+                    elements.map(el => <Map key={el.id} type={el.type} id={el.id} onClick={() => setIndex(el.id)} />)
+                }
+            </div>
+
+            <Modal index={index} setIndex={setIndex} />
+        </div>
+    )
+}
+
+const Highlight = ({ id, onClick }: { id?: string, onClick: () => void }) => {
+    return <motion.div layoutId={id} className="row-span-4 col-span-4 bg-pink-500"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 4)"
         }}
+        onClick={onClick}
     />
 }
 
-const Banner = () => {
-    return <div className="row-span-2 col-span-4 bg-amber-500"
+const Banner = ({ id, onClick }: { id?: string, onClick: () => void }) => {
+    return <motion.div layoutId={id} className="row-span-2 col-span-4 bg-amber-500"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 2)"
         }}
+        onClick={onClick}
     />
 }
 
-const Featured = () => {
-    return <div className="row-span-2 col-span-2 bg-purple-500"
+const Featured = ({ id, onClick }: { id?: string, onClick: () => void }) => {
+    return <motion.div layoutId={id} className="row-span-2 col-span-2 bg-purple-500"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 2)"
         }}
+        onClick={onClick}
     />
 }
 
-const Row = () => {
-    return <div className="row-span-1 col-span-4 bg-cyan-500"
+const Row = ({ id, onClick }: { id?: string, onClick: () => void }) => {
+    return <motion.div layoutId={id} className="row-span-1 col-span-4 bg-cyan-500"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 1)"
         }}
+        onClick={onClick}
     />
 }
 
-const Button = () => {
-    return <div className="row-span-1 col-span-2 bg-red-500"
+const Button = ({ id, onClick }: { id?: string, onClick: () => void }) => {
+    return <motion.div layoutId={id} className="row-span-1 col-span-2 bg-red-500"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 1)"
         }}
+        onClick={onClick}
     />
 }
 
-const Icon = () => {
-    return <div className="row-span-1 col-span-1 bg-teal-500"
+const Icon = ({ id, onClick }: { id?: string, onClick: () => void }) => {
+    return <motion.div layoutId={id} className="row-span-1 col-span-1 bg-teal-500"
         style={{
             minHeight: "calc((100vw - (var(--grid-gap) * 4)) / var(--grid-cols) * 1)"
         }}
+        onClick={onClick}
     />
 }
 
